@@ -19,16 +19,29 @@ class TestTokenizer(unittest.TestCase):
         e1 = "to sentence here 12:30 3h 15min tags:tag1,tag3 , tag4"
         e2 = "plain todo"
 
+        target = [
+            ('WORD', 'to'),
+            ('WORD', 'sentence'),
+            ('WORD', 'here'),
+            ('INTEGER', 12),
+            ('TAG_MARKER', ':'),
+            ('INTEGER', 30),
+            ('INTEGER', 3),
+            ('TIME_UNIT', 'h'),
+            ('INTEGER', 15),
+            ('TIME_UNIT', 'min'),
+            ('WORD', 'tags'),
+            ('TAG_MARKER', ':'),
+            ('WORD', 'tag1'),
+            ('WORD', 'tag3'),
+            ('WORD', 'tag4'),
+            ]
+
         tok = tokenizer(e1)
-        for e in tok.get_token_list():
-            print e
 
-        
-        
-        #self.assertEqual(str(c), "Herbert Claus Naumann -- Ukutuko")
+        self.assertEqual(tok.get_token_list(), target)
 
-        #self.assertEqual(c.get_full_name(), "Herbert Claus Naumann")
- 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestTokenizer)
+    unittest.TextTestRunner(verbosity=3).run(suite)

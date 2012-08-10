@@ -14,9 +14,28 @@ class tokenizer:
     def __init__(self, string):
         self.string = string
         self.cur_idx = 0
+        self.cur_tidx = 0
+        self.tlist = self._build_token_list()
 
     def reset(self):
         self.cur_idx = 0
+
+    def get_token_list(self):
+        return self.tlist
+
+    def consume_next_token(self):
+        if self.cur_tidx < len(self.tlist):
+            n = self.cur_tidx
+            self.cur_tidx += 1
+            return self.tlist[n]
+        else:
+            return None
+        
+    def reveal_next_token(self):
+        if self.cur_tidx < len(self.tlist):
+            return self.tlist[self.cur_tidx]
+        else:
+            return None
 
     def _get_next_char(self):
         if self.cur_idx < len(self.string):
@@ -56,7 +75,7 @@ class tokenizer:
         return word
 
 
-    def next_token(self):
+    def _next_token(self):
         # check for seperators
         while self._reveal_next_char() in SEPERATORS:
            self._get_next_char()
@@ -82,13 +101,13 @@ class tokenizer:
 
         return ("WORD", word)
 
-    def get_token_list(self):
+    def _build_token_list(self):
         self.reset()
         tlist = []
-        t = self.next_token()
+        t = self._next_token()
         while t != None:
             tlist.append(t)
-            t = self.next_token()
+            t = self._next_token()
 
         return tlist
             
