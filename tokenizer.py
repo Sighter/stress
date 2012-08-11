@@ -15,6 +15,7 @@ class tokenizer:
         self.string = string
         self.cur_idx = 0
         self.cur_tidx = 0
+        self.tag_marker_count = 0
         self.tlist = self._build_token_list()
 
     def reset(self):
@@ -91,6 +92,7 @@ class tokenizer:
             return ("INTEGER", self._read_number())
         
         if character == ":":
+            self.tag_marker_count += 1
             return ("TAG_MARKER", self._get_next_char())
 
         # handle all other

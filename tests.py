@@ -40,6 +40,7 @@ class TestTokenizer(unittest.TestCase):
         tok = tokenizer(e1)
 
         self.assertEqual(tok.get_token_list(), target)
+        self.assertEqual(tok.tag_marker_count, 2)
 
 
 if __name__ == '__main__':
