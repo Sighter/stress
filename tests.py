@@ -42,7 +42,14 @@ class TestTokenizer(unittest.TestCase):
         self.assertEqual(tok.get_token_list(), target)
         self.assertEqual(tok.tag_marker_count, 2)
 
+    def test_reveal_offset(self):
+        e1 = "to sentence here 12:30 3h 15min tags:tag1,tag3 , tag4"
+        
+        tok = tokenizer(e1)
+        
+        self.assertEqual(tok.reveal_next_token(1), ('WORD', 'sentence'))
 
+        
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestTokenizer)
     unittest.TextTestRunner(verbosity=3).run(suite)

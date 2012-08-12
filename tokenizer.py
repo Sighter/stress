@@ -32,9 +32,9 @@ class tokenizer:
         else:
             return None
         
-    def reveal_next_token(self):
-        if self.cur_tidx < len(self.tlist):
-            return self.tlist[self.cur_tidx]
+    def reveal_next_token(self, offset = 0):
+        if self.cur_tidx + offset < len(self.tlist):
+            return self.tlist[self.cur_tidx + offset]
         else:
             return None
 
