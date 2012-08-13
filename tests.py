@@ -9,6 +9,7 @@
 import unittest
 
 from tokenizer import tokenizer
+from entry import entry_parser
 
 class TestTokenizer(unittest.TestCase):
 
@@ -50,6 +51,21 @@ class TestTokenizer(unittest.TestCase):
         self.assertEqual(tok.reveal_next_token(1), ('WORD', 'sentence'))
 
         
+class TestEntryClass(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_entry_parser(self):
+        e1 = "to sentence here 12:30 3h 15min tags:tag1,tag3 , tag4"
+        new_parser = entry_parser()
+        new_parser.parse_str(e1)
+        print
+        print new_parser
+        
+
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestTokenizer)
+    suite = unittest.TestSuite()
+    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(TestTokenizer))
+    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(TestEntryClass))
     unittest.TextTestRunner(verbosity=3).run(suite)
