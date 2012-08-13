@@ -9,6 +9,8 @@
 import unittest
 
 from tokenizer import tokenizer
+from tokenizer import HOUR_UNITS
+from tokenizer import MIN_UNITS
 from entry import entry_parser
 
 class TestTokenizer(unittest.TestCase):
@@ -59,9 +61,8 @@ class TestEntryClass(unittest.TestCase):
     def test_entry_parser(self):
         e1 = "to sentence here 12:30 3h 15min tags:tag1,tag3 , tag4"
         new_parser = entry_parser()
-        new_parser.parse_str(e1)
-        print
-        print new_parser
+        e = new_parser.parse_str(e1)
+        print e
         
 
 if __name__ == '__main__':

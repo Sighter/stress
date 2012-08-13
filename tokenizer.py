@@ -6,7 +6,9 @@
 # @Created:     2012-07-29.
 # @Revision:    0.1
 
-TIME_UNITS = ["min", "minutes", "minute", "h", "hours", "hour"]
+HOUR_UNITS = ["hour", "hours", "h"]
+MIN_UNITS = ["min", "minutes", "minute"]
+TIME_UNITS = HOUR_UNITS + MIN_UNITS
 SEPERATORS = [" ", ","]
 
 

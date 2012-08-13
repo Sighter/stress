@@ -6,7 +6,11 @@
 # @Created:     2012-07-24.
 # @Revision:    0.1
 
+import datetime
+
 from tokenizer import tokenizer
+from tokenizer import HOUR_UNITS
+from tokenizer import MIN_UNITS
 
 def parse_str(self, entry_str):
     """parse entry string"""
@@ -20,6 +24,14 @@ class entry:
         self.starttime = ""
         self.duration = ""
 
+    def __str__(self):
+        """debug print"""
+        s =  "entry [\n"
+        s += "  msg = " + str(self.msg) + "\n"
+        s += "  tags = " + str(self.tags) + "\n"
+        s += "  durations = " + str(self.duration) + "\n"
+        s += "]"
+        return s
 
         
 class entry_parser:
@@ -58,8 +70,6 @@ class entry_parser:
             if t == None:
                 break
             
-            print "parsing", t
-            
             if t[0] == "INTEGER":
                 con = self._read_time_duration()
                 if con == True:
@@ -77,8 +87,34 @@ class entry_parser:
             self.tok.consume_next_token()
 
             
+        # build msg
+        new_entry = entry()
 
-        # build new entry
+        for word in self.msg:
+            new_entry.msg += str(word) + " "
+
+        new_entry.msg = new_entry.msg.strip()
+            
+        # build timedelta objects and sum them
+        complete_duration = datetime.timedelta()
+
+        for d in self.durations:
+            if d[1] in HOUR_UNITS:
+                cur_dur = datetime.timedelta(hours = d[0])
+            elif d[1] in MIN_UNITS:
+                cur_dur = datetime.timedelta(minutes = d[0])
+
+            complete_duration += cur_dur
+
+        new_entry.duration = complete_duration
+
+        # build entry
+        new_entry.tags = self.tags
+
+        # reset the parser and return the new entry
+        self.reset()
+
+        return new_entry
         
     def _read_time_duration(self):
         """this method reads a time duration"""
@@ -87,7 +123,7 @@ class entry_parser:
         if t1 != None and t1[0] == "TIME_UNIT":
             digit = self.tok.consume_next_token()[1]
             unit = self.tok.consume_next_token()[1]
-            self.durations.append(str(digit) + " " + unit)
+            self.durations.append((digit, unit))
 
             return True
         else:
